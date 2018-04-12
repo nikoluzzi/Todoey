@@ -11,6 +11,9 @@ import UIKit
 class TodoListViewController: UITableViewController {
     
     var itemArray = ["Yoga","Méditation", "Écrire"]
+    
+    let defaults = UserDefaults.standard
+    
     var doneArray = [String]()
     var selected : Int = 0
     
@@ -20,6 +23,9 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.labelList.text? = ""
+        if let items = defaults.array(forKey: "TodoListArray") as? [String]{
+            itemArray = items
+        }
 
     }
     
@@ -64,6 +70,9 @@ class TodoListViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             //what will open once the user clicks
             self.itemArray.append(textField.text ?? "New Item")
+            
+            self.defaults.set(self.itemArray, forKey: "TodoListArray")
+            
             self.tableView.reloadData()
         
         }
